@@ -7,11 +7,11 @@ import com.example.votingapp.model.VotingData;
 import java.util.List;
 
 public interface IadminService {
-    String AddCandidate(String token, AddCondidateDTO addCondidateDTO);
+    String AddCandidate( AddCondidateDTO addCondidateDTO);
 
-    List<Candidate> showAllCandiates(String token);
+    List<Candidate> showAllCandiates();
 
-    List<VotingData> getVotingRecord(String token, int candidateId);
+    List<VotingData> getVotingRecord( int candidateId);
 
 
 }

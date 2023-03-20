@@ -10,6 +10,7 @@ public class VotingAppApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(VotingAppApplication.class, args);
+        System.out.println("Welcome to Voting App");
     }
 
 }

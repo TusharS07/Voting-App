@@ -17,6 +17,7 @@ public class UserModel {
     private String emailId;
     private String phoneNo;
     private String password;
+    private String role = "user";
 
     private boolean isLogin = false;
 

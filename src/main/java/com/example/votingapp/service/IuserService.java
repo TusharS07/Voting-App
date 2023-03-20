@@ -7,5 +7,5 @@ public interface IuserService {
     String RegisterNewUser(RegisterDTO registerDTO);
     String login(LoginDTO loginDTO);
 
-    String Vote(String token, int CandidateID);
+    String Vote(int userId, int CandidateID);
 }

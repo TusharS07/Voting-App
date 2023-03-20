@@ -11,4 +11,6 @@ public interface VotingDataRepo extends JpaRepository<VotingData, Integer> {
 
 
     List<VotingData> findAllByCandidateId(int candidateID);
+
+    VotingData findByUserId(int userId);
 }

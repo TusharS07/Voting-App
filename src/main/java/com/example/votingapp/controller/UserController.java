@@ -32,8 +32,8 @@ public class UserController {
     }
 
     @PostMapping("/Vote")
-    public ResponseEntity<Response> voting(@RequestParam String token, @RequestParam int candidateID) {
-        iuserService.Vote(token, candidateID);
+    public ResponseEntity<Response> voting(@RequestParam int userId, @RequestParam int candidateID) {
+        iuserService.Vote(userId, candidateID);
         Response response = new Response(candidateID, "voting Successfull for");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
