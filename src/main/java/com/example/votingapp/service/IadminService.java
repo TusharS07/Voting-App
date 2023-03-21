@@ -1,6 +1,8 @@
 package com.example.votingapp.service;
 
 import com.example.votingapp.Dto.AddCondidateDTO;
+import com.example.votingapp.Dto.LoginDTO;
+import com.example.votingapp.Dto.RegisterDTO;
 import com.example.votingapp.model.Candidate;
 import com.example.votingapp.model.VotingData;
 
@@ -12,6 +14,10 @@ public interface IadminService {
     List<Candidate> showAllCandiates();
 
     List<VotingData> getVotingRecord( int candidateId);
+
+    String RegisterAdmin(String username, String password);
+
+    String adminLogin(String username, String password);
 
 
 }
