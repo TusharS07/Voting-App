@@ -9,15 +9,14 @@ import com.example.votingapp.model.VotingData;
 import java.util.List;
 
 public interface IadminService {
-    String AddCandidate( AddCondidateDTO addCondidateDTO);
+    String AddCandidate(String token, AddCondidateDTO addCondidateDTO);
 
     List<Candidate> showAllCandiates();
 
-    List<VotingData> getVotingRecord( int candidateId);
+    List<VotingData> getVotingRecord( String token, int cadidateID);
 
-    String RegisterAdmin(String username, String password);
-
-    String adminLogin(String username, String password);
+    String logoutAdmin(String token);
+    String adminLogin(LoginDTO loginDTO);
 
 
 }

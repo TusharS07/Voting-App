@@ -6,6 +6,6 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class LoginDTO {
-    private String emailId;
+    private String userName;
     private String password;
 }

@@ -20,6 +20,7 @@ public class Candidate {
 
     private String candidateName;
 
+    private int voteCount;
     public Candidate(String candidateName) {
         this.candidateName = candidateName;
     }

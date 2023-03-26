@@ -1,16 +1,15 @@
 package com.example.votingapp.service;
 
 import com.example.votingapp.Dto.AddCondidateDTO;
-import com.example.votingapp.Dto.RegisterDTO;
+import com.example.votingapp.Dto.LoginDTO;
 import com.example.votingapp.exception.VotingAppException;
-import com.example.votingapp.model.Admin;
 import com.example.votingapp.model.Candidate;
 import com.example.votingapp.model.UserModel;
 import com.example.votingapp.model.VotingData;
-import com.example.votingapp.repository.AdminRepo;
 import com.example.votingapp.repository.CandidateRepo;
 import com.example.votingapp.repository.UserRepo;
 import com.example.votingapp.repository.VotingDataRepo;
+import com.example.votingapp.utility.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,33 +28,38 @@ public class AdminService implements IadminService{
     VotingDataRepo votingDataRepo;
 
     @Autowired
-    AdminRepo adminRepo;
+    JwtUtils jwtUtils;
+
+
 
 
     @Override
-    public String RegisterAdmin(String username, String password) {
-        Admin admin = new Admin(username, password);
-        adminRepo.save(admin);
-            return "Admin Register Successful";
-    }
-
-    @Override
-    public String adminLogin(String username, String password) {
-        Admin admin = adminRepo.findByUsernameAndPassword(username, password);
-        if (admin != null) {
+    public String adminLogin(LoginDTO loginDTO) {
+        UserModel admin = userRepo.findByUserNameAndPassword(loginDTO.getUserName(), loginDTO.getPassword());
+        if (admin != null && admin.getRole().equals("admin")) {
+            String token = jwtUtils.generateToken(loginDTO);
             admin.setLogin(true);
             admin.setId(admin.getId());
-            adminRepo.save(admin);
+            userRepo.save(admin);
+            return token;
         }
         throw new VotingAppException("Invaild Admin Credentials");
     }
 
 
     @Override
-    public String AddCandidate(AddCondidateDTO addCondidateDTO) {
-            Candidate candidate = new Candidate(addCondidateDTO.getCandidateName());
-            candidateRepo.save(candidate);
-            return "Candidate Added successfull";
+    public String AddCandidate(String token, AddCondidateDTO addCondidateDTO) {
+        LoginDTO loginDTO = jwtUtils.decodeToken(token);
+        UserModel admin = userRepo.findByUserNameAndPassword(loginDTO.getUserName(), loginDTO.getPassword());
+        if (admin.isLogin() && admin.getRole().equals("admin")) {
+            if (candidateRepo.findByCandidateName(addCondidateDTO.getCandidateName()) == null){
+                Candidate candidate = new Candidate(addCondidateDTO.getCandidateName());
+                candidateRepo.save(candidate);
+                return "Candidate Added successfull";
+            }
+            throw new VotingAppException("Candidate Already Exist");
+        }
+        throw new VotingAppException("Invaild Admin Credentials");
     }
 
     @Override
@@ -64,8 +68,25 @@ public class AdminService implements IadminService{
     }
 
     @Override
-    public List<VotingData> getVotingRecord(int candidateId) {
+    public List<VotingData> getVotingRecord(String token, int candidateId) {
+        LoginDTO loginDTO = jwtUtils.decodeToken(token);
+        UserModel admin = userRepo.findByUserNameAndPassword(loginDTO.getUserName(), loginDTO.getPassword());
+        if (admin.isLogin() && admin.getRole().equals("admin")) {
             List<VotingData> votingData = votingDataRepo.findAllByCandidateId(candidateId);
             return votingData;
+        }
+        throw new VotingAppException("Invaild Admin Credentials");
+    }
+
+    @Override
+    public String logoutAdmin(String token) {
+        LoginDTO loginDTO = jwtUtils.decodeToken(token);
+        UserModel admin = userRepo.findByUserNameAndPassword(loginDTO.getUserName(), loginDTO.getPassword());
+        if (admin.isLogin() && admin.getRole().equals("admin")) {
+            admin.setLogin(false);
+            userRepo.save(admin);
+            return "Logout Successfully";
+        }
+        throw new VotingAppException("Invaild Admin Credentials");
     }
 }

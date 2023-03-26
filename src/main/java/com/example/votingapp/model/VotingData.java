@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity
 public class VotingData {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private int userId;

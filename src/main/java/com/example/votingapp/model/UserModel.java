@@ -21,6 +21,8 @@ public class UserModel {
 
     private boolean isLogin = false;
 
+    private boolean votingStatus = false;
+
     public UserModel(String userName, String emailId, String phoneNo, String password) {
         this.userName = userName;
         this.emailId = emailId;
