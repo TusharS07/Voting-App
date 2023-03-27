@@ -65,7 +65,7 @@ public class UserService implements IuserService {
                 if (user.isVotingStatus()) {
                     throw new VotingAppException("Voting is already Completed");
                 } else {
-                    VotingData votingData = new VotingData(user.getId(), candidateId);
+                    VotingData votingData = new VotingData(user, candidate);
                     candidate.setVoteCount(candidate.getVoteCount() + 1);
                     user.setVotingStatus(true);
                     userRepo.save(user);

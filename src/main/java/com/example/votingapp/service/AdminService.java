@@ -72,7 +72,7 @@ public class AdminService implements IadminService{
         LoginDTO loginDTO = jwtUtils.decodeToken(token);
         UserModel admin = userRepo.findByUserNameAndPassword(loginDTO.getUserName(), loginDTO.getPassword());
         if (admin.isLogin() && admin.getRole().equals("admin")) {
-            List<VotingData> votingData = votingDataRepo.findAllByCandidateId(candidateId);
+            List<VotingData> votingData = votingDataRepo.findByCandidate(candidateId);
             return votingData;
         }
         throw new VotingAppException("Invaild Admin Credentials");

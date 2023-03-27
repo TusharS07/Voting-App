@@ -14,11 +14,16 @@ public class VotingData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int userId;
-    private int candidateId;
+    @OneToOne()
+    @JoinColumn(name = "userID")
+    private UserModel user;
 
-    public VotingData(int userId, int candidateId) {
-        this.userId = userId;
-        this.candidateId = candidateId;
+    @ManyToOne()
+    @JoinColumn(name = "candidateId")
+    private Candidate candidate;
+
+    public VotingData(UserModel user, Candidate candidate) {
+        this.user = user;
+        this.candidate = candidate;
     }
 }
